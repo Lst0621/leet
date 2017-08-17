@@ -1,5 +1,5 @@
-package Valid;// url: https://leetcode.com/problems/valid-parentheses/description/
-
+// url: https://leetcode.com/problems/valid-parentheses/description/
+package Valid;
 import java.util.Stack;
 
 /**
