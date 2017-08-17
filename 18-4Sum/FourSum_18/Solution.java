@@ -10,6 +10,7 @@
  *]
  **/
 
+package FourSum_18;
 import java.util.*;
 public class Solution {
 	private int lastThree =0;
