@@ -1,5 +1,7 @@
 *.swp
 *.class
+*.jar
 .idea/
 *.iml
 out/
+target/
