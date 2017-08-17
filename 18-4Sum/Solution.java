@@ -12,6 +12,8 @@
 
 import java.util.*;
 public class Solution {
+	private int lastThree =0;
+	private int lastTwo = 0;
 	public List<List<Integer>> fourSum(int[] nums, int target) {
 		List<List<Integer>> res = new ArrayList<>();
 		int len = nums.length;
@@ -32,7 +34,12 @@ public class Solution {
 
 		if (temp * 4 > target)
 			return res;
-		if (nums[len - 1] * 4 < target)
+
+		lastTwo = nums[len-1]+ nums[len-2];
+		lastThree = lastTwo+ nums[len-3];
+
+
+		if (lastThree+ nums[len-4] < target)
 			return res;
 		for (int j = 0; j < len - 3; j++) {
 			int num = nums[j];
@@ -53,7 +60,7 @@ public class Solution {
 	                                     int len) {
 		List<List<Integer>> res = new ArrayList<>();
 		if ((nums[header] + nums[header + 1] + nums[header + 2] > target ||
-		     nums[len - 1] + nums[len - 2] + nums[len - 3] < target))
+		     lastThree < target))
 			return res;
 
 		int temp = nums[header];
@@ -77,7 +84,7 @@ public class Solution {
 	                                   int len) {
 		List<List<Integer>> res = new ArrayList<>();
 		if ((nums[header] + nums[header + 1] > target ||
-		     nums[len - 1] + nums[len - 2] < target))
+		     lastTwo < target))
 			return res;
 		HashMap<Integer, Integer> map = new HashMap<>();
 		Set<Integer> set = new TreeSet<>();
