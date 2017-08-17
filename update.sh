@@ -1,3 +1,3 @@
 #!/bin/bash
-git add --all
-git commit -m "$1"
+git add --all | lolcat
+git commit -m "$1" | lolcat
