@@ -23,12 +23,65 @@ public class Solution {
 
 	/** Ctrl + C starts here **/
 
+	private ListNode tail = null;
 	public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+		if (headA == null || headB == null)
+			return null;
 
-		return null;
+		int sum1 = reverse(headA);
+		ListNode endingA = tail;
+		//		System.out.println(sum1);
+		//		System.out.println(endingA);
+
+		int sum2 = reverse(headB);
+		ListNode endingB = tail;
+		//		System.out.println(sum2);
+		//		System.out.println(endingB);
+
+		if (endingB != headA) {
+			reverse(endingA);
+			reverse(endingB);
+			return null;
+		}
+
+		int sum3 = reverse(endingA);
+		if (sum1 < sum3) {
+			int a = (sum1 + sum2 - sum3) / 2;
+			ListNode res = headA;
+			while (a > 0) {
+				res = res.next;
+				a--;
+			}
+			return res;
+		} else {
+			int b = (sum3 + sum2 - sum1) / 2;
+			ListNode res = headB;
+			while (b > 0) {
+				res = res.next;
+				b--;
+			}
+			return res;
+		}
 	}
 
-	/** Ctrl + V code ends here **/
+	private int reverse(ListNode head) {
+		int cnt = 0;
+		ListNode temp = null;
+		ListNode nodeA = head;
+		ListNode nodeB = nodeA.next;
+		while (nodeB != null) {
+			nodeA.next = temp;
+			temp = nodeA;
+			nodeA = nodeB;
+			nodeB = nodeB.next;
+			cnt++;
+		}
+		nodeA.next = temp;
+		tail = nodeA;
+		return cnt;
+	}
+
+	/** Ctrl + C ends here **/
 
 	public static void main(String[] args) {
 		Solution sol = new Solution();
