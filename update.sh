@@ -17,7 +17,7 @@ read confirm
 
 echo ""
 
-git add --all | lolcat
+git add --all
 echo ""
 echo ""
-git commit -m "$log" | lolcat
+git commit -m "$log" 

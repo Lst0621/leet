@@ -1,4 +1,4 @@
-//url: https://leetcode.com/problems/symmetric-tree/description/
+// url: https://leetcode.com/problems/symmetric-tree/description/
 package sysmTree;
 
 import org.lst.leet.structure.TreeNode;
@@ -8,32 +8,57 @@ import java.util.LinkedList;
 public class Solution {
 
 	/** Ctrl + C starts here **/
-	public boolean isSymmetric(TreeNode root) {
-		return isSymmetricV2(root);
 
+	public boolean isSymmetric(TreeNode root) { return isSymmetricV3(root); }
+
+	// beat 22.46
+	private boolean isSymmetricV3(TreeNode root) {
+		if (root == null)
+			return true;
+		return isSym(root.left, root.right);
 	}
-	//beat 10.75
+	private boolean isSym(TreeNode head, TreeNode tail) {
+		if (head == null) {
+			if (tail != null) {
+				return false;
+			}
+			return true;
+		} else {
+			if (tail == null) {
+				return false;
+			}
+		}
+		if (head.val != tail.val) {
+			return false;
+		}
+
+		return isSym(head.left, tail.right) && isSym(head.right, tail.left);
+	}
+
+	/** Ctrl + C ends here **/
+
+	// beat 10.75
 	private boolean isSymmetricV2(TreeNode root) {
-		if (root==null) return true;
+		if (root == null)
+			return true;
 		LinkedList<TreeNode> list = new LinkedList<>();
 		list.add(root.left);
 		list.add(root.right);
 		return isListSymV2(list);
 	}
-	private boolean isListSymV2(LinkedList<TreeNode> list){
-		while(list.size()>0) {
+	private boolean isListSymV2(LinkedList<TreeNode> list) {
+		while (list.size() > 0) {
 			TreeNode head = list.pollFirst();
 			TreeNode tail = list.pollFirst();
-			if (head==null) {
+			if (head == null) {
 				if (tail != null) {
 					return false;
 				}
-			}
-			else {
-				if(tail==null) {
+			} else {
+				if (tail == null) {
 					return false;
 				}
-				if(head.val!=tail.val) {
+				if (head.val != tail.val) {
 					return false;
 				}
 
@@ -46,52 +71,47 @@ public class Solution {
 		return true;
 	}
 
-	/** Ctrl + C ends here **/
-
-	//beat 3.88
+	// beat 3.88
 	private boolean isSymmetricV1(TreeNode root) {
-		if (root==null) return true;
+		if (root == null)
+			return true;
 		LinkedList<TreeNode> list = new LinkedList<>();
 		list.add(root.left);
 		list.add(root.right);
 		return isListSym(list);
 	}
-	private boolean isListSym(LinkedList<TreeNode> list){
-		if(list.size()%2==1)
+	private boolean isListSym(LinkedList<TreeNode> list) {
+		if (list.size() % 2 == 1)
 			return false;
 
 		TreeNode head;
 		TreeNode tail;
 		LinkedList<TreeNode> deep = new LinkedList<>();
-		while(list.size()>0) {
+		while (list.size() > 0) {
 			head = list.pollFirst();
 			tail = list.pollLast();
-			if (head==null) {
+			if (head == null) {
 				if (tail != null) {
 					return false;
 				}
-			}
-			else {
-				if(tail==null) {
+			} else {
+				if (tail == null) {
 					return false;
 				}
-				if(head.val!=tail.val) {
+				if (head.val != tail.val) {
 					return false;
 				}
-				//fixme
+				// fixme
 				deep.addFirst(head.right);
 				deep.addFirst(head.left);
 				deep.addLast(tail.left);
 				deep.addLast(tail.right);
 			}
 		}
-		if(deep.size()==0) return true;
+		if (deep.size() == 0)
+			return true;
 		return isListSym(deep);
-
 	}
-
-
-
 
 	public static void main(String[] args) {
 		Solution sol = new Solution();
