@@ -15,10 +15,5 @@ foldname=$(ls -dt */ | head -10| head -$foldnum | tail -1)
 echo $foldname
 cd "$foldname"
 
-find ./ ../util/  -name "*.java" | xargs javac -cp ../util/*
-for file in  $(find ./ -name "*.class" | sed -e "s/.\///") 
-do
-echo $file
-cp --parents  $file ../target/
-done
+../jc.sh
 
