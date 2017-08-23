@@ -24,3 +24,5 @@ tail -n+2 ../../9999-Temp/temp/Solution.java >> Solution.java
 echo "file created" | lolcat 
 echo ""
 lolcat Solution.java
+echo ""
+pwd
