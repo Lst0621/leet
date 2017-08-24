@@ -15,7 +15,112 @@ import java.util.*;
 public class Solution {
 	private int lastThree =0;
 	private int lastTwo = 0;
+
 	public List<List<Integer>> fourSum(int[] nums, int target) {
+
+		List<List<Integer>> res = new ArrayList<>();
+		int len = nums.length;
+		if (len < 4)
+			return res;
+
+		Arrays.sort(nums);
+
+		int head1 = nums[0];
+		int head2 = head1+nums[1];
+		int head3 = head2+nums[2];
+		int head4 = head3+nums[3];
+
+		int tail1 = nums[len-1];
+		int tail2 = tail1+nums[len-2];
+		int tail3 = tail2+nums[len-3];
+		int tail4 = tail3+nums[len-4];
+
+
+		if(head4>target) return res;
+		if(tail4<target) return res;
+
+		Map<Integer,Integer> map = new HashMap<>();
+		TreeSet<Integer> set = new TreeSet<>();
+		for(int num:nums){
+			set.add(num);
+			int cnt = map.getOrDefault(num,0);
+			if(cnt<4){
+				map.put(num,cnt+1);
+			}
+		}
+
+		for(int numA:set.tailSet(target-tail3)){
+
+			if(numA+head3>target) continue;
+			//if(numA+tail3<target) continue;
+			for(int numB:set.tailSet(Math.max(numA,target-numA-tail2))) {
+				boolean AB = false;
+
+				if(numA==numB) {
+					if(map.get(numB)<2)
+						continue;
+					AB = true;
+				}
+				if(numA+numB+head2>target) continue;
+				//if(numA+numB+tail2<target) continue;
+
+
+
+				for(int numC:set.tailSet(Math.max(numB,target-numA-numB-tail1))){
+					boolean BC = false;
+
+
+					if(numA+numB+numC+head1>target) continue;
+					//if(numA+numB+numC+tail1<target) continue;
+
+					if(numB==numC){
+						if(AB) {
+							if(map.get(numC)<3)
+								continue;
+						}
+						else {
+							if(map.get(numC)<2)
+								continue;
+						}
+						BC = true;
+					}
+
+
+					int numD = target-numB-numC-numA;
+					if(numC>numD) continue;
+					if(set.contains(numD)==false)
+						continue;
+					if(numC==numD) {
+						int thres = 2;
+						if(BC) {
+							thres++;
+							if(AB){
+								thres++;
+							}
+						}
+						if(map.get(numD)<thres)
+							continue;
+					}
+					List<Integer> list = new ArrayList<>(4);
+					list.add(numA);
+					list.add(numB);
+					list.add(numC);
+					list.add(numD);
+					res.add(list);
+
+
+				}
+			}
+		}
+
+
+
+		return res;
+
+	}
+
+
+	public List<List<Integer>> fourSum1(int[] nums, int target) {
 		List<List<Integer>> res = new ArrayList<>();
 		int len = nums.length;
 		if (len < 4)
