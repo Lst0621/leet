@@ -16,9 +16,52 @@ import java.util.List;
 public class Solution {
 
 	/** Ctrl + C starts here **/
+	public List<String> readBinaryWatch(int num) {
+		List<String> list = new ArrayList<>();
+		int hour = 0;
+		int min = 0;
+		int pos = 9;
+		check(hour,min,pos,num,list);
+		return list;
+
+	}
+
+	private void check(int hour,int min,int pos,int left,List<String> list ){
+		if(left<0) return;
+		if(pos+1<left) return;
+		if(hour>11) return;
+		if(min>59) return;
+		if(pos>=6){
+			check(hour+ (1<<(pos-6)),min,pos-1,left-1,list);
+			check(hour,min,pos-1,left,list);
+			return;
+		}
+
+		if(pos>=1){
+			check(hour,min+(1<<pos),pos-1,left-1,list);
+			check(hour,min,pos-1,left,list);
+			return;
+		}
+		System.out.println(hour+" "+min+ " "+left);
+		list.add(genString(hour,min+left));
+	}
+
+	private String genString(int hour,int min){
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.valueOf(hour));
+		if (min < 10) {
+			sb.append(":0");
+		} else {
+			sb.append(":");
+		}
+		sb.append(String.valueOf(min));
+		return sb.toString();
+
+	}
+
 	//really bad
 	//fixme 
-	public List<String> readBinaryWatch(int num) {
+	public List<String> readBinaryWatch1(int num) {
 		List<String> list = new ArrayList<>();
 		for (int i=0;i<=Math.min(num,4);i++) {
 			if (num-i>6) continue;
@@ -98,7 +141,7 @@ public class Solution {
 	public void test() {
 		System.out.println("Test starts!");
 		System.out.println("Good Luck!");
-		int num = 6;
+		int num = 1;
 		System.out.println(readBinaryWatch(num).toString());
 	}
 }
