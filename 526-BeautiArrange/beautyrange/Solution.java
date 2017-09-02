@@ -15,31 +15,31 @@
  */
 package beautyrange;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Solution {
 
 	/** Ctrl + C starts here **/
 	public int countArrangement(int N) {
-		LinkedList<Integer> list = new LinkedList<>();
+		ArrayList<Integer> list = new ArrayList<>();
 		for(int i=1;i<=N;i++)
 			list.add(i);
-		int pos = 1;
-		return arrange(pos,N,list);
+		int pos = N;
+		return arrange(pos,list);
 	}
 
-	private int  arrange(int pos,int last,LinkedList<Integer> list){
+	private int  arrange(int pos,ArrayList<Integer> list){
 		int cnt = 0;
 		for(int num:list){
 			if(num%pos==0||pos%num==0) {
-				if(pos==last){
-					System.out.println("Found!");
+				if(pos==1){
+					//System.out.println("Found!");
 					cnt++;
 				}
 				else {
-					LinkedList<Integer> left = (LinkedList<Integer>) list.clone();
+					ArrayList<Integer> left = new ArrayList<>(list);
 					left.remove(new Integer(num));
-					cnt += arrange(pos + 1, last, left);
+					cnt += arrange(pos -1 ,  left);
 				}
 			}
 		}
