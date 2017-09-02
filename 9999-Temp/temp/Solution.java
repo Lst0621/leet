@@ -13,5 +13,6 @@ public class Solution {
 	public void test() {
 		System.out.println("Test starts!");
 		System.out.println("Good Luck!");
+		System.out.println("");
 	}
 }
