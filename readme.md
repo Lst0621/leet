@@ -9,14 +9,12 @@
 
 - 2017.8.30 : 100
 
-# Need Help
+    
+# TODO  
 
+[583-delete2strings](./583-Delete2Strings/deleteTwoStrings/Solution.java)
 
-| No | Title | url |
-|:-----------:|:------------:|:------------:|
-| 18       |        4 sum |     https://leetcode.com/problems/4sum/description/    
-
-
+# FIXME
 
 
 
