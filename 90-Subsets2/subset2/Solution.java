@@ -12,7 +12,7 @@ public class Solution {
 	/** Ctrl + C starts here **/
 	public List<List<Integer>> subsetsWithDup(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
-		List<List<Integer>> temp = new ArrayList<>();
+
 		map = new HashMap<>();
 		Integer zero = new Integer(0);
 		int count = 0;
@@ -24,40 +24,40 @@ public class Solution {
 		int c = count;
 		int[] keys = new int[count];
 		int[] values = new int[count];
+		int[] result = new int[count];
 
-		List<Integer> list = new ArrayList<>();
-		temp.add(list);
-		for(Map.Entry<Integer,Integer> pair:map.entrySet()){
+
+		for(Map.Entry<Integer,Integer> pair:map.entrySet()) {
 			c--;
-			keys[c]=pair.getKey();
-			values[c]=pair.getValue();
+			keys[c] = pair.getKey();
+			values[c] = pair.getValue();
 		}
-		helper(res,temp, keys,values,0, count);
-		return res;
 
+
+
+
+		helper(res,keys,values,result,0,count);
+		return res;
 	}
-	void helper(List<List<Integer>> res,List<List<Integer>> temp,int[] keys,int[] values,int index,int len) {
-		if (index == len) {
-			temp.forEach(item -> res.add(new ArrayList<>(item)));
+
+		private void helper(List<List<Integer>> res,
+							int[] keys,int[] values,int[] result,int index,int count){
+		if(index==count) {
+			List<Integer> list = new ArrayList<>();
+			for (int i = 0; i < count; i++) {
+				int v = keys[i];
+				for (int j = 0; j < result[i]; j++)
+					list.add(v);
+			}
+			res.add(list);
 			return;
 		}
-		helper(res, temp, keys, values, index + 1, len);
-		int key = keys[index];
-		int value = values[index];
-		System.out.println(key+ " "+ value);
-		System.out.println("");
-		List<Integer> list = new ArrayList<>();
-		List<List<Integer>> next = new ArrayList<>();
-		for (int i = 1; i <= value; i++) {
-			list.add(key);
-			temp.forEach(item ->
-						item.addAll(list));
-			helper(res, temp, keys, values, index + 1, len);
-			temp.forEach(item ->
-				item.removeAll(list));
-		}
-	}
+		for(int i=0;i<=values[index];i++){
+			result[index] = i;
+			helper(res,keys,values,result,index+1,count);
+			}
 
+		}
 
 
 	/** Ctrl + C ends here **/
