@@ -9,7 +9,47 @@ package palindromicSub;
 public class Solution {
 
 	/** Ctrl + C starts here **/
+
+
 	public int countSubstrings(String s) {
+		int len = s.length();
+		if(len<=0) return len;
+		int count = len;
+		char[] chars = s.toCharArray();
+
+		for(int i=1;i<len-1;i++){
+			int head = i-1;
+			int tail = i+1;
+			while(true){
+				if(chars[head]!=chars[tail])
+					break;
+				count++;
+				head--;
+				tail++;
+				if(head<0) break;
+				if(tail>=len) break;
+			}
+		}
+		for(int i=1;i<len;i++){
+			int head = i-1;
+			int tail = i;
+			while(true){
+				if(s.charAt(head)!=s.charAt(tail))
+					break;
+				count++;
+				head--;
+				tail++;
+				if(head<0) break;
+				if(tail>=len) break;
+			}
+		}
+		return count;
+
+	}
+
+	/** Ctrl + C ends here **/
+
+	public int countSubstrings2(String s) {
 		int len = s.length();
 		if(len<=0) return len;
 		int count = len;
@@ -49,7 +89,7 @@ public class Solution {
 	}
 
 
-	/** Ctrl + C ends here **/
+
 
 	public static void main(String[] args) {
 		Solution sol = new Solution();
