@@ -1,103 +1,13 @@
 // url: https://leetcode.com/problems/remove-boxes/description/
 package rmbox;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 //fixme
 public class Solution {
 
 	/** Ctrl + C starts here **/
 	public int removeBoxes(int[] boxes) {
-		System.out.println(boxes.length);
-
-
-		return trim(boxes);
-	}
-
-
-	/** Ctrl + C ends here **/
-
-	private int trim (int[] boxes){
-		for(int num:boxes) {
-			System.out.print(num + " ");
-		}
-		System.out.println("");
-		int len = boxes.length;
-		if(len<=1) return len;
-		int last = boxes[0];
-		Map<Integer,Pair> map = new HashMap<>();
-		int index = 0;
-		for(int i=1;i<len;i++){
-			if(boxes[i]==last){
-				continue;
-			}
-			else {
-				if(map.containsKey(last)){
-					map.put(last,new Pair(-1,-1));
-				}
-				else {
-					map.put(last,new Pair(index,i-1));
-				}
-				index = i;
-				last = boxes[i];
-			}
-		}
-		if(map.containsKey(last)){
-			map.put(last,new Pair(-1,-1));
-		}
-		else {
-			map.put(last,new Pair(index,len-1));
-		}
-
-
-		//Integer sum = new Integer(0);
-		int sum = 0;
-		int count = 0;
-		for(Map.Entry<Integer,Pair> entry:map.entrySet()) {
-			Pair p = entry.getValue();
-			if(p.start!=-1){
-
-				int diff = p.end-p.start+1;
-				sum += diff*diff;
-				count += diff;
-				for(int k=p.start;k<=p.end;k++)
-					boxes[k] = -1;
-			}
-		}
-		System.out.println(map);
-		System.out.println("count: "+count);
-		if(count>0) {
-			int[] trimed = new int[boxes.length - count];
-			int j = 0;
-			for (int i = 0; i < boxes.length; i++) {
-				if (boxes[i] != -1)
-					trimed[j++] = boxes[i];
-
-			}
-			sum += trim(trimed);
-		}
-		else {
-			sum+= removeBoxes2(boxes);
-		}
-		System.out.println("sum: "+sum);
-		return sum;
-	}
-	class Pair{
-		int start;
-		int end;
-		public Pair(int start,int end){
-			this.start = start;
-			this.end = end;
-		}
-		public String toString(){
-			return "start: "+start+" end: "+end;
-		}
-	}
-
-	HashMap<String,Integer> map = new HashMap<>();
-	public int removeBoxes2(int[] boxes) {
 		int len = boxes.length;
 		if(len==0) return 0;
 		if(len==1) return boxes[0]*boxes[0];
@@ -106,12 +16,13 @@ public class Solution {
 			System.out.println(num);
 		}
 		return helper(boxes,visited,len);
-		//return 0;
-
 	}
 
+
+	Map<String,Integer> map = new HashMap<>();
+	int pats = 0;
+
 	private int helper(int[] boxes,boolean[] visited,int len){
-		int max = 0;
 		StringBuilder sb = new StringBuilder();
 		for(boolean bit:visited){
 			if(bit) sb.append('1');
@@ -119,9 +30,25 @@ public class Solution {
 				sb.append('0');
 		}
 		String pattern = sb.toString();
-		System.out.println(pattern);
+
 		Integer ret = map.get(pattern);
-		if(ret!=null) return(ret);
+		if(ret!=null) {
+			System.out.println("cache!");
+			return (ret);
+		}
+		System.out.println("not cache!");
+
+		pats++;
+//		if(pats%1000==0) {
+//			System.out.println(pats + ": " + pattern);
+//			for(int i=1;i<len;i++)
+//				if(visited[i]==false){
+//					System.out.print(boxes[i]+" ");
+//				}
+//			System.out.println("");
+//		}
+
+		Map<Integer,List<List<Integer>>> sameNum = new HashMap<>();
 
 
 		for(int i=0;i<len;){
@@ -129,10 +56,8 @@ public class Solution {
 				i++;
 				continue;
 			}
-
-			int cnt = 0;
 			int num = boxes[i];
-			Set<Integer> list = new HashSet<>();
+			List<Integer> list = new ArrayList<>();
 			int j=i;
 			for(;j<len;j++){
 				if(visited[j]==false) {
@@ -141,19 +66,53 @@ public class Solution {
 					}
 					else {
 						list.add(j);
-						visited[j]=true;
-						cnt++;
-
+						//visited[j]=true;
+						//cnt++;
 					}
-
 				}
 			}
-			int temp = cnt*cnt+helper(boxes,visited,len);
-			list.forEach(item->visited[item]=false);
-			if(temp>max) max =temp;
+			List<List<Integer>> numList = sameNum.get(num);
+			if(numList==null) {
+				numList = new ArrayList<>();
+				sameNum.put(num,numList);
+			}
+			numList.add(list);
+
 			i = j;
 
 		}
+
+
+		ArrayList<Integer> lonely = new ArrayList<>();
+		int max = 0;
+		for(Map.Entry<Integer,List<List<Integer>>> entry:sameNum.entrySet()){
+			List<List<Integer>> value = entry.getValue();
+			if(value.size()==1){
+				List<Integer> list = value.get(0);
+				list.forEach(item->visited[item]=true);
+				lonely.addAll(list);
+				max += list.size() * list.size();
+			}
+		}
+		System.out.println(lonely.size());
+
+		for(Map.Entry<Integer,List<List<Integer>>> entry:sameNum.entrySet()){
+			List<List<Integer>> value = entry.getValue();
+			if(value.size()>1){
+				for(List<Integer> list:value){
+					list.forEach(item->visited[item]=true);
+					int temp = list.size() * list.size()+helper(boxes,visited,len);
+					if(temp>max) max =temp;
+					list.forEach(item->visited[item]=false);
+				}
+			}
+		}
+
+
+		lonely.forEach(item->visited[item]=false);
+
+
+
 		map.put(pattern,max);
 		return max;
 	}
