@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class Solution {
-
+	//fixme
 	/** Ctrl + C starts here **/
 	private HashMap<String,Integer> map;
 	public int maxCoins(int[] nums) {
@@ -22,20 +22,20 @@ public class Solution {
 		if(l==0) return 0;
 		map = new HashMap<>();
 		List<Integer> list = new LinkedList<>();
-		list.add(1);
+		list.add(-1);
 		int sum = 0;
 		int temp = 1;
 		for(int i=0;i<l;i++){
 			int num = nums[i];
 			if(num>=1)
-				list.add(num);
+				list.add(i);
 		}
-		list.add(1);
-		int ret =  helper(list);
+		list.add(-1);
+		int ret =  helper(list,nums);
 		return ret;
 	}
 
-	private int helper(List<Integer> list){
+	private int helper(List<Integer> list,int[] nums){
 
 		StringBuilder sb= new StringBuilder();
 		for(int num:list){
@@ -53,7 +53,7 @@ public class Solution {
 		int s = list.size();
 		if(s==3)
 		{
-			ret = list.get(1);
+			ret = nums[list.get(1)];
 			map.put(str,ret);
 			return ret;
 		}
@@ -61,15 +61,21 @@ public class Solution {
 
 
 		for(int i=1;i<s-1;i++){
-			int sum = list.get(i)*list.get(i-1)*list.get(i+1);
-			int temp = list.get(i);
-//			List<Integer> next = new ArrayList<>(list);
-//			next.remove(i);
-			list.remove(i);
-			sum += helper(list);
+
+			int temp = nums[list.get(i)];
+			int indexHead = list.get(i-1);
+			int head = indexHead>=0? nums[indexHead]:1;
+			int indexTail = list.get(i+1);
+			int tail = indexTail>=0? nums[indexTail]:1;
+
+			int sum = temp*head*tail;
+			List<Integer> next = new ArrayList<>(list);
+			next.remove(i);
+
+			sum += helper(next,nums);
 			if(sum>ret)
 				ret = sum;
-			list.add(i,temp);
+			//list.add(i,temp);
 		}
 
 		map.put(str,ret);
@@ -89,7 +95,7 @@ public class Solution {
 		System.out.println("Test starts!");
 		System.out.println("Good Luck!");
 		System.out.println("");
-		System.out.println(maxCoins(new int[]{8,2,6,8,9,8,1,4,1,5,3,0,7,7,0,4,2,2,5}));
+		System.out.println(maxCoins(new int[]{8,2,6,8,9,8,1,4,1,5,3,7,7,0,4,2,2,5}));
 		//System.out.println(maxCoins(new int[]{3,1,5,8}));
 	}
 }
