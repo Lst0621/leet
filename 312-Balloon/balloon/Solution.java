@@ -22,9 +22,7 @@ public class Solution {
 		int l = nums.length;
 		if(l==0) return 0;
 		temp = new int[l][l];
-		for(int i=0;i<l;i++)
-			for(int j=0;j<l;j++)
-				temp[i][j] = -1;
+
 		int ret =  helper(nums,0,l-1,1,1);
 		return ret;
 	}
@@ -33,17 +31,22 @@ public class Solution {
 		//System.out.println(start +  " " + end);
 		if(end<start) return 0;
 		if(end==start) return a*b*fetch(nums,start);
-
-		if(temp[start][end]!=-1)
-			return temp[start][end];
 		int ret = 0;
+		if(temp[start][end]!=0) {
+			 ret  = temp[start][end];
+			 return ret>0?ret:0;
+		}
+
 
 		for(int i=start;i<=end;i++){
-			int sum = a*b*fetch(nums,i) + helper(nums,start,i-1,a,fetch(nums,i))+helper(nums,i+1,end,fetch(nums,i),b);
+			int sum = a*b*nums[i] + helper(nums,start,i-1,a,fetch(nums,i))+helper(nums,i+1,end,fetch(nums,i),b);
 			if(ret<sum)
 				ret = sum;
 		}
-		temp[start][end] = ret;
+		if(ret>0)
+			temp[start][end] = ret;
+		else
+			temp[start][end] = -1;
 		return ret;
 	}
 
