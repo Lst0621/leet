@@ -1,7 +1,7 @@
-// url: https://leetcode.com/problems/remove-duplicate-letters/description/
-package removeDup;
+// url: https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/
+package midsort;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -27,62 +27,36 @@ import java.util.*;
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  * */
 
-
+// fixme
 public class Solution {
 
 	/** Ctrl + C starts here **/
+	public double findMedianSortedArrays(int[] a, int[] b) {
+		int m = a.length;
+		int n = b.length;
+		int k1 = (m + n + 2) / 2;
+		int k2 = (m + n + 1) / 2;
+		if (k1 == k2)
+			return helper(a, 0, b, 0, k1);
+		else
+			return (helper(a, 0, b, 0, k1) + helper(a, 0, b, 0, k2)) / 2;
+	}
 
-	public String removeDuplicateLetters(String s) {
-		List<Integer>[] arrays = new List[26];
-		int cnt = 0;
-		for (int i = 0; i < s.length(); i++) {
-			int c = s.charAt(i) - 'a';
-			if (arrays[c] == null) {
-				cnt++;
-				arrays[c] = new LinkedList<>();
-			}
-			arrays[c].add(i);
-		}
-
-		StringBuilder sb = new StringBuilder();
-		while (cnt > 0) {
-			int i = 0;
-			int pos = -1;
-			for (; i < 26; i++) {
-				if (arrays[i] == null)
-					continue;
-				pos = arrays[i].get(0);
-				boolean good = true;
-				for (int j = 0; j < 26; j++) {
-					if (i == j)
-						continue;
-					if (arrays[j] == null)
-						continue;
-					List<Integer> list = arrays[j];
-					if (pos > list.get(list.size() - 1)) {
-						good = false;
-						break;
-					}
-				}
-				if (good) {
-					break;
-				}
-			}
-			cnt--;
-			sb.append((char)(i + 'a'));
-			arrays[i] = null;
-			for (int j = 0; j < 26; j++) {
-				if (arrays[j] == null)
-					continue;
-				List<Integer> list = arrays[j];
-				while (list.size() > 0 && list.get(0) < pos) {
-					list.remove(0);
-				}
-				if (list.size() == 0)
-					arrays[j] = null;
-			}
-		}
-		return sb.toString();
+	private double helper(int[] a, int pa, int[] b, int pb, int k) {
+		if (pa > a.length - 1)
+			return b[pb + k - 1];
+		if (pb > b.length - 1)
+			return a[pa + k - 1];
+		if (k == 1)
+			return Math.min(a[pa], b[pb]);
+		int aMid =
+		    pa + k / 2 - 1 < a.length ? a[pa + k / 2 - 1] : Integer.MAX_VALUE;
+		int bMid =
+		    pb + k / 2 - 1 < b.length ? b[pb + k / 2 - 1] : Integer.MAX_VALUE;
+		if (aMid < bMid)
+			return helper(a, pa + k / 2, b, pb, k - k / 2);
+		else
+			return helper(a, pa, b, pb + k / 2, k - k / 2);
 	}
 
 	/** Ctrl + C ends here **/
@@ -95,8 +69,12 @@ public class Solution {
 		System.out.println("Test starts!");
 		System.out.println("Good Luck!");
 		System.out.println("");
-		String a = "cbacdcbc";
-		System.out.println(a);
-		System.out.println(removeDuplicateLetters(a));
+		//		int[] a = new int[]{1,2,3,5,67,113};
+		//		int[] b = new int[]{4,12,13,18};
+		int[] a = new int[] {1, 2};
+		int[] b = new int[] {3, 4};
+		System.out.println(Arrays.toString(a));
+		System.out.println(Arrays.toString(b));
+		System.out.println(findMedianSortedArrays(a, b));
 	}
 }
