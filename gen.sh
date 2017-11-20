@@ -1,5 +1,5 @@
-# try to generate sth useful in all problems
 #!/bin/bash
+# try to generate sth useful in all problems
 echo "Please enter folder name" | lolcat
 read foldname
 echo "Please enter package name" | lolcat
