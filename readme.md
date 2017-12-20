@@ -14,14 +14,6 @@
 - 2017.10.03 : 250
 - 2017.12.18 : 300
 
-    
-# TODO  
-
-[583-delete2strings](./583-Delete2Strings/deleteTwoStrings/Solution.java)<br>
-[546-removebox](./546-RMBox/rmbox/Solution.java)<br>
-[309-StockCool](./309-StockCool/stockCool/Solution.java)<br>
-
-# FIXME
 
 
 
